@@ -22,7 +22,7 @@ prompt_template = PromptTemplate(
     template = "Write this essay as if you are a Software Engineer. USE MARKDOWN FORMATTING\n" +\
             "USE THE TITLES FROM THE HEADER OUTLINE\n" +\
             'Outline : {outline}\n' +\
-            'Write this section of the article, be sure to give multiple paragraphs per heading'
+            'Write this section of the article'
 )
 
 outline_template = PromptTemplate(
@@ -32,10 +32,9 @@ outline_template = PromptTemplate(
     'H1 headers:{h1}\n' +\
     'H2 headers:{h2}\n' +\
     'The output should be in the format below\n' +\
-    'H1:\n  H2:\n       H3:\n       H3:\n   H2:\n       H3:\n       H3:\n Continue format until there is at least 4 h2 headers\n' +\
+    'H1:\n  H2:\n       H3:\n       H3:\n   H2:\n       H3:\n       H3:\n Continue format until the outline is done\n' +\
     'Create H3 headers that are relavent to the H2 headers above it. Make sure each header is on a newline'
 )
-
 blog_chain = LLMChain(
     llm = llm,
     prompt = prompt_template
@@ -51,8 +50,9 @@ h2="".join(search["h2"])
 if keyword:
     outline = outline_chain.run(keyword=keyword,h1=h1,h2=h2)
     result = outline_parser(outline)
-    st.write(outline)
+    print(result)
     essay = ""
     for i in result:
         essay += blog_chain.run(outline=i)
+    print(essay)
     st.write(essay)
