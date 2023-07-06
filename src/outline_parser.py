@@ -1,13 +1,10 @@
 def outline_parser(str):
-    header = str.splitlines() 
-    index = 0
-    sections = []
+    header = str.splitlines()
     section = ""
-    for x, i in enumerate(header):
+    count=0
+    for i in header:
         if "H2" in i:
-            if index is not None:
-                sections.append(section)
-                section = ""
-            index = x     
-        section += i
-    return sections
+            section+=i+'\n'
+            count+=1
+    return (header, count)
+
